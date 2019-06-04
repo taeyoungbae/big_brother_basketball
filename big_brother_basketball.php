@@ -2,12 +2,12 @@
   Created by Jiemin Zhang, 2011.
   Modified by Simona Radu, Raghav Thakur, Ed Knorr, and others.
 
-  This file shows the very basics of how to execute PHP commands
+  This file shows the very very very basics of how to execute PHP commands
   on Oracle.
 
   Specifically, it will drop a table, create a table, insert values,
   update values, and perform select queries.
- 
+
   NOTE:  If you have a table called "tab1", it will be destroyed
          by this sample program.
 
@@ -15,46 +15,46 @@
   All OCI commands are commands to the Oracle libraries.
   To get the file to work, you must place it somewhere where your
   Apache server can run it, and you must rename it to have a ".php"
-  extension.  You must also change the username and password on the 
+  extension.  You must also change the username and password on the
   OCILogon below to be your own ORACLE username and password.
 
   Next, we have some sample HTML code that will appear when you run
   this script.
  -->
 
-<p>If you wish to reset the table, press the reset button. 
+<p>If you wish to reset the table, press the reset button.
    If this is the first time that you're running this page,
    you MUST use reset.</p>
 
-<form method="POST" action="big_brother_basketball.php"> 
+<form method="POST" action="big_brother_basketball.php">
    <p><input type="submit" value="Reset" name="reset"></p>
 </form>
 
 <p>Insert values into tab1 below:</p>
-<p><font size="2"> Number&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+<p><font size="2"> Number&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 Name</font></p>
 <form method="POST" action="big_brother_basketball.php">
 <!-- refreshes page when submitted -->
 
-   <p><input type="text" name="insNo" size="6"><input type="text" name="insName" 
+   <p><input type="text" name="insNo" size="6"><input type="text" name="insName"
 size="18">
-<!-- Define two variables to pass values. -->    
+<!-- Define two variables to pass values. -->
 <input type="submit" value="insert" name="insertsubmit"></p>
 </form>
 
-<!-- Create a form to pass the values.  
-     See below for how to get the values. --> 
+<!-- Create a form to pass the values.
+     See below for how to get the values. -->
 
 <p> Update the name by inserting the old and new values below: </p>
-<p><font size="2"> Old Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+<p><font size="2"> Old Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 New Name</font></p>
 <form method="POST" action="big_brother_basketball.php">
 <!-- refreshes page when submitted -->
 
-   <p><input type="text" name="oldName" size="6"><input type="text" name="newName" 
+   <p><input type="text" name="oldName" size="6"><input type="text" name="newName"
 size="18">
 <!-- Define two variables to pass values. -->
-      
+
 <input type="submit" value="update" name="updatesubmit"></p>
 <input type="submit" value="run hardcoded queries" name="dostuff"></p>
 </form>
@@ -90,26 +90,26 @@ size="18">
 
 <?php
 
-/* This tells the system that it's no longer just parsing 
+/* This tells the system that it's no longer just parsing
    HTML; it's now parsing PHP. */
 
 // keep track of errors so it redirects the page only if
 // there are no errors
 $success = True;
-$db_conn = OCILogon("ora_jackbae", "a18218800", 
+$db_conn = OCILogon("ora_jackbae", "a18218800",
 "dbhost.students.cs.ubc.ca:1522/stu");
 
-function executePlainSQL($cmdstr) { 
+function executePlainSQL($cmdstr) {
      // Take a plain (no bound variables) SQL command and execute it.
 	//echo "<br>running ".$cmdstr."<br>";
 	global $db_conn, $success;
-	$statement = OCIParse($db_conn, $cmdstr); 
-     // There is a set of comments at the end of the file that 
+	$statement = OCIParse($db_conn, $cmdstr);
+     // There is a set of comments at the end of the file that
      // describes some of the OCI specific functions and how they work.
 
 	if (!$statement) {
 		echo "<br>Cannot parse this command: " . $cmdstr . "<br>";
-		$e = OCI_Error($db_conn); 
+		$e = OCI_Error($db_conn);
            // For OCIParse errors, pass the connection handle.
 		echo htmlentities($e['message']);
 		$success = False;
@@ -118,7 +118,7 @@ function executePlainSQL($cmdstr) {
 	$r = OCIExecute($statement, OCI_DEFAULT);
 	if (!$r) {
 		echo "<br>Cannot execute this command: " . $cmdstr . "<br>";
-		$e = oci_error($statement); 
+		$e = oci_error($statement);
            // For OCIExecute errors, pass the statement handle.
 		echo htmlentities($e['message']);
 		$success = False;
@@ -155,8 +155,8 @@ function executeBoundSQL($cmdstr, $list) {
 			//echo "<br>".$bind."<br>";
 			OCIBindByName($statement, $bind, $val);
 			unset ($val); // Make sure you do not remove this.
-                              // Otherwise, $val will remain in an 
-                              // array object wrapper which will not 
+                              // Otherwise, $val will remain in an
+                              // array object wrapper which will not
                               // be recognized by Oracle as a proper
                               // datatype.
 		}
@@ -179,7 +179,7 @@ function printResult($result) { //prints results from a select statement
 	echo "<tr><th>ID</th><th>Name</th></tr>";
 
 	while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-		echo "<tr><td>" . $row["NID"] . "</td><td>" . $row["NAME"] . "</td></tr>"; //or just use "echo $row[0]" 
+		echo "<tr><td>" . $row["NID"] . "</td><td>" . $row["NAME"] . "</td></tr>"; //or just use "echo $row[0]"
 	}
 	echo "</table>";
 }
@@ -192,7 +192,7 @@ Input:  takes in a result returned from your SQL query and an array of
         strings of the column names
 Output: prints an HTML table of the results returned from your SQL query.
 
-printTable is an easy way to iteratively print the columns of a table, 
+printTable is an easy way to iteratively print the columns of a table,
 instead of having to manually print out each column which can be
 cumbersome and lead to duplicate code all over the place.
 
@@ -208,14 +208,14 @@ Step 2) In whichever file you want to use the printTable function,
         assuming this file also contains the server code to communicate
         with the database:  Type in "include 'print-table.php'" without
         double quotes.  If the file in which you want to use printTable
-        is not in the root directory, you'll need to specify the path of 
+        is not in the root directory, you'll need to specify the path of
         root directory where 'print-table.php' is.  As an example:
         "include '../print-table.php'" without double quotes.
 
-Step 3) You can now make calls to the printTable function without 
+Step 3) You can now make calls to the printTable function without
         needing to redeclare it in your current file.
 
-Note:  You can move all the server code into a separate file called 
+Note:  You can move all the server code into a separate file called
        'server.php' in a similar way, except whichever file needs to
        use the server code needs to have "require 'server.php'" without
        double quotes.  So, you might have something like what's shown
@@ -280,7 +280,7 @@ if ($db_conn) {
 
 	} else
 		if (array_key_exists('insertsubmit', $_POST)) {
-			// Get values from the user and insert data into 
+			// Get values from the user and insert data into
                 // the table.
 			$tuple = array (
 				":bind1" => $_POST['insNo'],
@@ -353,34 +353,33 @@ if ($db_conn) {
 /* OCILogon() allows you to log onto the Oracle database
      The three arguments are the username, password, and database.
      You will need to replace "username" and "password" for this to
-     to work. 
+     to work.
      all strings that start with "$" are variables; they are created
-     implicitly by appearing on the left hand side of an assignment 
+     implicitly by appearing on the left hand side of an assignment
      statement */
 /* OCIParse() Prepares Oracle statement for execution
       The two arguments are the connection and SQL query. */
 /* OCIExecute() executes a previously parsed statement
       The two arguments are the statement which is a valid OCI
-      statement identifier, and the mode. 
+      statement identifier, and the mode.
       default mode is OCI_COMMIT_ON_SUCCESS. Statement is
       automatically committed after OCIExecute() call when using this
       mode.
       Here we use OCI_DEFAULT. Statement is not committed
       automatically when using this mode. */
-/* OCI_Fetch_Array() Returns the next row from the result data as an  
+/* OCI_Fetch_Array() Returns the next row from the result data as an
      associative or numeric array, or both.
-     The two arguments are a valid OCI statement identifier, and an 
-     optinal second parameter which can be any combination of the 
+     The two arguments are a valid OCI statement identifier, and an
+     optinal second parameter which can be any combination of the
      following constants:
 
-     OCI_BOTH - return an array with both associative and numeric 
-     indices (the same as OCI_ASSOC + OCI_NUM). This is the default 
-     behavior.  
-     OCI_ASSOC - return an associative array (as OCI_Fetch_Assoc() 
-     works).  
-     OCI_NUM - return a numeric array, (as OCI_Fetch_Row() works).  
-     OCI_RETURN_NULLS - create empty elements for the NULL fields.  
-     OCI_RETURN_LOBS - return the value of a LOB of the descriptor.  
+     OCI_BOTH - return an array with both associative and numeric
+     indices (the same as OCI_ASSOC + OCI_NUM). This is the default
+     behavior.
+     OCI_ASSOC - return an associative array (as OCI_Fetch_Assoc()
+     works).
+     OCI_NUM - return a numeric array, (as OCI_Fetch_Row() works).
+     OCI_RETURN_NULLS - create empty elements for the NULL fields.
+     OCI_RETURN_LOBS - return the value of a LOB of the descriptor.
      Default mode is OCI_BOTH.  */
 ?>
-
